@@ -71,21 +71,22 @@ function App() {
     description:
       "Очень неожиданный для меня сюжет, о многом заставляет задуматься...",
     rating: 10,
-    image: "/movie-image.jpg", // замените на ваш путь к изображению
+    image: "/movie-image.jpg",
   });
 
   return (
     <div className="container">
       <header>
-        <div className="header-title">
+        <div className="header-left">
           <span className="bold">Мои фильмы</span>
           <span className="divider">|</span>
           <span className="watch-later">Хочу посмотреть</span>
+          <div className="header-icons">
+            <i className="icon sort-icon">⭳</i>
+            <i className="icon filter-icon">🔍</i>
+          </div>
         </div>
-        <div className="header-icons">
-          <i className="icon sort-icon">⭳</i>
-          <i className="icon filter-icon">🔍</i>
-        </div>
+        <button className="add-movie-btn">Добавить фильм</button>
       </header>
       <main className="grid">
         {movies.map((movie, index) => (

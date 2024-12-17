@@ -135,6 +135,7 @@
 /* Общие стили */
 
 /* Заголовок и фильтры */
+/* Заголовок */
 header {
   display: flex;
   justify-content: space-between;
@@ -144,28 +145,20 @@ header {
   border-bottom: 1px solid #ddd;
 }
 
-.header-title {
+.header-left {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
-.header-title .bold {
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.header-title .divider {
-  margin: 0 10px;
-  color: #999;
-}
-
-.header-title .watch-later {
+.header-left .watch-later {
   color: #555;
 }
 
 .header-icons {
   display: flex;
-  gap: 15px;
+  gap: 10px;
+  margin-left: 10px;
 }
 
 .icon {
@@ -175,6 +168,19 @@ header {
 
 .icon:hover {
   color: #6c63ff;
+}
+
+.add-movie-btn {
+  background-color: #6c63ff;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-movie-btn:hover {
+  background-color: #5750d6;
 }
 
 body {
@@ -231,6 +237,7 @@ h1 {
   display: block;
 }
 
+/* Оценка фильма */
 .rating {
   position: absolute;
   top: 10px;
@@ -238,8 +245,12 @@ h1 {
   background-color: #4caf50;
   color: white;
   padding: 5px 8px;
-  border-radius: 50%;
+  border-radius: 8px; /* Закругленные углы */
   font-weight: bold;
+  font-size: 14px;
+  display: inline-block;
+  min-width: 30px;
+  text-align: center;
 }
 
 .movie-info {
