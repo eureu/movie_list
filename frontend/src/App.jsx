@@ -77,8 +77,15 @@ function App() {
   return (
     <div className="container">
       <header>
-        <h1>Мои фильмы</h1>
-        <button className="add-movie-btn">Добавить фильм</button>
+        <div className="header-title">
+          <span className="bold">Мои фильмы</span>
+          <span className="divider">|</span>
+          <span className="watch-later">Хочу посмотреть</span>
+        </div>
+        <div className="header-icons">
+          <i className="icon sort-icon">⭳</i>
+          <i className="icon filter-icon">🔍</i>
+        </div>
       </header>
       <main className="grid">
         {movies.map((movie, index) => (
