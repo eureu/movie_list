@@ -85,7 +85,7 @@ function App() {
     rating: 0,
   });
 
-  // Открыть и закрыть форму
+  // Открытие и закрытие формы
   const handleOpenForm = () => setShowForm(true);
   const handleCloseForm = () => setShowForm(false);
 
@@ -118,6 +118,11 @@ function App() {
     }
   };
 
+  // Удаление фильма
+  const handleDeleteMovie = (index) => {
+    setMovies((prev) => prev.filter((_, i) => i !== index));
+  };
+
   return (
     <div className="container">
       <header>
@@ -137,7 +142,11 @@ function App() {
 
       <main className="grid">
         {movies.map((movie, index) => (
-          <MovieCard key={index} {...movie} />
+          <MovieCard
+            key={index}
+            {...movie}
+            onDelete={() => handleDeleteMovie(index)}
+          />
         ))}
       </main>
 
@@ -200,16 +209,11 @@ function App() {
                 required
               >
                 <option value="0">Выберите рейтинг</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
+                {[...Array(10).keys()].map((num) => (
+                  <option key={num} value={num + 1}>
+                    {num + 1}
+                  </option>
+                ))}
               </select>
               <button type="submit" className="submit-btn">
                 Добавить фильм
