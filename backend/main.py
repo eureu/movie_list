@@ -1,28 +1,33 @@
+from models import Base
+from schemas import MovieCreate, MovieResponse
+from crud import get_movies, create_movie, delete_movie
+from database import engine, SessionLocal
+
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from . import models, schemas, crud, database
 
-models.Base.metadata.create_all(bind=database.engine)
+# Создание таблиц
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
 def get_db():
-    db = database.SessionLocal()
+    db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
 
-@app.get("/movies", response_model=list[schemas.MovieResponse])
+@app.get("/movies", response_model=list[MovieResponse])
 def read_movies(db: Session = Depends(get_db)):
-    return crud.get_movies(db)
+    return get_movies(db)
 
-@app.post("/movies", response_model=schemas.MovieResponse)
-def create_movie(movie: schemas.MovieCreate, db: Session = Depends(get_db)):
-    return crud.create_movie(db, movie)
+@app.post("/movies", response_model=MovieResponse)
+def create_new_movie(movie: MovieCreate, db: Session = Depends(get_db)):
+    return create_movie(db, movie)
 
 @app.delete("/movies/{movie_id}")
-def delete_movie(movie_id: int, db: Session = Depends(get_db)):
-    if not crud.delete_movie(db, movie_id):
+def remove_movie(movie_id: int, db: Session = Depends(get_db)):
+    if not delete_movie(db, movie_id):
         raise HTTPException(status_code=404, detail="Movie not found")
     return {"detail": "Movie deleted"}
