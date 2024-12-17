@@ -82,6 +82,7 @@ function App() {
     date: "",
     description: "",
     image: null,
+    rating: 0,
   });
 
   // Открыть и закрыть форму
@@ -105,9 +106,15 @@ function App() {
   const handleAddMovie = (e) => {
     e.preventDefault();
     if (newMovie.title && newMovie.date && newMovie.description) {
-      setMovies((prev) => [...prev, { ...newMovie, rating: 0 }]);
+      setMovies((prev) => [...prev, { ...newMovie }]);
       setShowForm(false);
-      setNewMovie({ title: "", date: "", description: "", image: null });
+      setNewMovie({
+        title: "",
+        date: "",
+        description: "",
+        image: null,
+        rating: 0,
+      });
     }
   };
 
@@ -185,6 +192,25 @@ function App() {
                 onChange={handleInputChange}
                 required
               ></textarea>
+              <select
+                name="rating"
+                className="input-field"
+                value={newMovie.rating}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="0">Выберите рейтинг</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
               <button type="submit" className="submit-btn">
                 Добавить фильм
               </button>
