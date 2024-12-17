@@ -60,23 +60,14 @@
 
 // export default App;
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./App.css";
 import MovieCard from "./MovieCard";
 
-function App() {
-  const [movies, setMovies] = useState(
-    Array(8).fill({
-      title: "1+1",
-      date: "12.08.24",
-      description:
-        "Очень неожиданный для меня сюжет, о многом заставляет задуматься...",
-      rating: 10,
-      image: "/movie-image.jpg",
-    })
-  );
-
-  const [showForm, setShowForm] = useState(false);
+const App = () => {
+  const [movies, setMovies] = useState([]); // Список фильмов
+  const [showForm, setShowForm] = useState(false); // Форма добавления фильма
   const [newMovie, setNewMovie] = useState({
     title: "",
     date: "",
@@ -85,9 +76,17 @@ function App() {
     rating: 0,
   });
 
-  // Открытие и закрытие формы
-  const handleOpenForm = () => setShowForm(true);
-  const handleCloseForm = () => setShowForm(false);
+  // Получение списка фильмов с бекенда
+  const fetchMovies = () => {
+    axios
+      .get("http://localhost:8000/movies")
+      .then((response) => setMovies(response.data))
+      .catch((error) => console.error("Error fetching movies:", error));
+  };
+
+  useEffect(() => {
+    fetchMovies();
+  }, []);
 
   // Обновление полей формы
   const handleInputChange = (e) => {
@@ -105,22 +104,29 @@ function App() {
   // Добавление нового фильма
   const handleAddMovie = (e) => {
     e.preventDefault();
-    if (newMovie.title && newMovie.date && newMovie.description) {
-      setMovies((prev) => [...prev, { ...newMovie }]);
-      setShowForm(false);
-      setNewMovie({
-        title: "",
-        date: "",
-        description: "",
-        image: null,
-        rating: 0,
-      });
-    }
+    const formData = newMovie;
+    axios
+      .post("http://localhost:8000/movies", formData)
+      .then(() => {
+        fetchMovies(); // Обновляем список фильмов
+        setShowForm(false);
+        setNewMovie({
+          title: "",
+          date: "",
+          description: "",
+          image: null,
+          rating: 0,
+        });
+      })
+      .catch((error) => console.error("Error adding movie:", error));
   };
 
   // Удаление фильма
-  const handleDeleteMovie = (index) => {
-    setMovies((prev) => prev.filter((_, i) => i !== index));
+  const handleDeleteMovie = (id) => {
+    axios
+      .delete(`http://localhost:8000/movies/${id}`)
+      .then(() => fetchMovies())
+      .catch((error) => console.error("Error deleting movie:", error));
   };
 
   return (
@@ -130,22 +136,18 @@ function App() {
           <span className="bold">Мои фильмы</span>
           <span className="divider">|</span>
           <span className="watch-later">Хочу посмотреть</span>
-          <div className="header-icons">
-            <i className="icon sort-icon">⭳</i>
-            <i className="icon filter-icon">🔍</i>
-          </div>
         </div>
-        <button className="add-movie-btn" onClick={handleOpenForm}>
+        <button className="add-movie-btn" onClick={() => setShowForm(true)}>
           Добавить фильм
         </button>
       </header>
 
       <main className="grid">
-        {movies.map((movie, index) => (
+        {movies.map((movie) => (
           <MovieCard
-            key={index}
-            {...movie}
-            onDelete={() => handleDeleteMovie(index)}
+            key={movie.id}
+            movie={movie}
+            onDelete={() => handleDeleteMovie(movie.id)}
           />
         ))}
       </main>
@@ -221,7 +223,7 @@ function App() {
               <button
                 type="button"
                 className="close-btn"
-                onClick={handleCloseForm}
+                onClick={() => setShowForm(false)}
               >
                 Закрыть
               </button>
@@ -231,6 +233,6 @@ function App() {
       )}
     </div>
   );
-}
+};
 
 export default App;
