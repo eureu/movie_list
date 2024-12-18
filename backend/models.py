@@ -9,4 +9,4 @@ class Movie(Base):
     description = Column(String, nullable=False)
     date = Column(Date, nullable=False)
     rating = Column(Integer, nullable=False)
-    image = Column(String, nullable=True)  # Путь или URL изображения
+    image = Column(String, nullable=True)
