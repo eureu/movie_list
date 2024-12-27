@@ -2,7 +2,6 @@ from sqlalchemy.orm import Session
 from models import Movie
 from schemas import MovieCreate
 
-
 def get_movies(db: Session):
     return db.query(Movie).all()
 

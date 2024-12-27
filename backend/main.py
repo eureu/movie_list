@@ -7,7 +7,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-# Создание таблиц
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
